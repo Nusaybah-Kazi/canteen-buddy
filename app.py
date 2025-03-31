@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
+import os
 import mysql.connector
 
 app = Flask(__name__)
@@ -9,13 +10,21 @@ app.secret_key = "supersecretkey"
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})
 
 db = mysql.connector.connect(
-    host=os.getenv("dpg-cvl85ba4d50c73e3a250-a"),       # Use environment variable
-    user=os.getenv("canteen_buddy_user"),
-    password=os.getenv("pBFyYfpelITmPqYwr6SI4E7h1SEZVOqP"),
-    database=os.getenv("canteen_buddy"),
-    port=int(os.getenv("5432", 3306))
+    DB_HOST = os.getenv("DB_HOST"),
+    DB_USER = os.getenv("DB_USER"),
+    DB_PASSWORD = os.getenv("DB_PASSWORD"),
+    DB_NAME = os.getenv("DB_NAME"),
+    DB_PORT = os.getenv("DB_PORT", "3306")
 )
 cursor = db.cursor()
+
+DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+# Configure Flask with SQLAlchemy
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 @app.route('/menu', methods=['GET'])
 def get_menu():
