@@ -9,10 +9,11 @@ app.secret_key = "supersecretkey"
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="canteen"
+    host=os.getenv("dpg-cvl85ba4d50c73e3a250-a"),       # Use environment variable
+    user=os.getenv("canteen_buddy_user"),
+    password=os.getenv("pBFyYfpelITmPqYwr6SI4E7h1SEZVOqP"),
+    database=os.getenv("canteen_buddy"),
+    port=int(os.getenv("5432", 3306))
 )
 cursor = db.cursor()
 
