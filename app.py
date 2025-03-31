@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 import os
 import mysql.connector
-
+from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
